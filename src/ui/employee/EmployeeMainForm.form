@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ui.employee.EmployeeMainForm">
+  <grid id="27dc6" binding="panelMain" default-binding="true" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="32" left="32" bottom="32" right="32"/>
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="f75d9" class="javax.swing.JButton" binding="registerPassportBtn">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Зарегистрировать паспорт клиента"/>
+        </properties>
+      </component>
+      <component id="2fbf2" class="javax.swing.JButton" binding="registerContractBtn">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Зарегистрировать контракт о вкладе"/>
+        </properties>
+      </component>
+      <component id="e9bac" class="javax.swing.JButton" binding="registerClientBtn" default-binding="true">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Зарегистрировать клиента"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
