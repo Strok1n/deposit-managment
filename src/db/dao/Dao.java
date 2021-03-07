@@ -7,9 +7,9 @@ public interface Dao {
 
     void insert(List<String> args) throws SQLException;
 
-    void update();
+    void update(List<String> args) throws SQLException;
 
-    void delete();
+    void delete(String  id) throws SQLException;
 
     void select() throws SQLException;
 

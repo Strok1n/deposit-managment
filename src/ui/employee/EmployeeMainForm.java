@@ -1,6 +1,7 @@
 package ui.employee;
 
 import util.WindowInitializer;
+import util.menus.CRUD;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -20,7 +21,7 @@ public class EmployeeMainForm extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 frame.setEnabled(false);
-                new EmployeeRegPassportForm(frame);
+                new CRUD(frame, 0, true);
             }
         });
         this.registerContractBtn.addMouseListener(new MouseAdapter() {

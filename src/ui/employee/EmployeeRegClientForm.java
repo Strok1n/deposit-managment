@@ -2,7 +2,7 @@ package ui.employee;
 
 import db.dao.ClientDao;
 import db.dao.PassportDao;
-import state.AppState;
+import state.State;
 import ui.AppProgressBar;
 import ui.Passports;
 import util.BCrypt;
@@ -59,7 +59,7 @@ public class EmployeeRegClientForm extends JFrame {
         });
 
 
-        for(Vector<String> vector : AppState.getPassports()) {
+        for(Vector<String> vector : State.getPassports()) {
             comboBox1.addItem(vector.get(0) + " "
                     +vector.get(1) + " " + vector.get(2) + " " + vector.get(3));
         }
@@ -118,6 +118,9 @@ public class EmployeeRegClientForm extends JFrame {
             }
         });
 
-        WindowInitializer.initialize(this, panel, DISPOSE_ON_CLOSE, "Регистрация клиента");
+        WindowInitializer.initialize(this,
+                        panel,
+                        DISPOSE_ON_CLOSE,
+                        "Регистрация клиента");
     }
 }

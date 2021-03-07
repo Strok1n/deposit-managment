@@ -1,24 +1,18 @@
 package ui;
 
-import db.dao.PassportDao;
-import state.AppState;
+import state.State;
 import util.WindowInitializer;
 
 import javax.swing.*;
-import javax.swing.event.CellEditorListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.EventObject;
-import java.util.Vector;
 
 public class Passports extends JFrame {
     private JTable table1;
-    private JPanel panel;
+    private JPanel panel12;
 
 
 
@@ -55,13 +49,17 @@ public class Passports extends JFrame {
         model.addColumn("Воинская деятельность");
         model.addColumn("Семейное положение");
         model.addColumn("Действителен ли паспорт");
-        for(int i = 0; i < AppState.getPassports().size(); i++)
-            model.addRow(AppState.getPassports().get(i));
+
+        //AppState.getPassports().sort(new VectorComparator());
+
+
+        for(int i = 0; i < State.getPassports().size(); i++)
+            model.addRow(State.getPassports().get(i));
         table1.getTableHeader().setReorderingAllowed(false);
         table1.setModel(model);
 
-
-        WindowInitializer.initialize(this, panel, DISPOSE_ON_CLOSE, "Паспорта");
+        this.setMinimumSize(new Dimension(1024,0));
+        WindowInitializer.initialize(this, panel12, DISPOSE_ON_CLOSE, "Паспорта");
     }
 
 }

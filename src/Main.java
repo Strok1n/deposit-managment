@@ -1,57 +1,74 @@
 import db.DatabaseConnection;
+import db.dao.ClientDao;
+import db.dao.EmployeeDao;
+import db.dao.PassportDao;
+import db.dao.PositionDao;
+import state.State;
+import ui.admin.AdminMainForm;
 
-
-import ui.AppProgressBar;
-import ui.LoginForm;
-import ui.Passports;
-import util.FieldValidator;
-
+import javax.imageio.ImageIO;
 import javax.swing.*;
-
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.util.Date;
+
 
 public class Main {
 
+    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, SQLException{
 
-
-
-
-
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, SQLException, NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-
-
-
-
-
-
-//        System.out.println("isDateValid: "+ FieldValidator.isDateValid("3222-12-11"));
-//
-//
-//
-//        String password = "1234";
-//
-//        String generatedSecuredPasswordHash = util.BCrypt.hashpw(password, util.BCrypt.gensalt(12));
-//
-//
-//        String generatedSecuredPasswordHash1 = util.BCrypt.hashpw(password, util.BCrypt.gensalt(13));
-//
-//        System.out.println(generatedSecuredPasswordHash);
-//        System.out.println(util.BCrypt.checkpw(password, generatedSecuredPasswordHash));
-//        System.out.println(util.BCrypt.checkpw(password, generatedSecuredPasswordHash1));
-//        System.out.println(util.BCrypt.checkpw("1234", generatedSecuredPasswordHash1));
-//        System.out.println(util.BCrypt.checkpw("12345", generatedSecuredPasswordHash1));
-
-//
-//
-
-        DatabaseConnection.setAdminConnection();
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-       new LoginForm();
+        DatabaseConnection.setAdminConnection();
 
+        State.init();
+
+        //System.out.println(AppState.models.get(1).getDataVector());
+
+        String str = "df";
+
+
+        new AdminMainForm();
+
+       // new CrudForm(new JFrame(), 0);
+       // new CrudForm(new JFrame(), 1);
+
+
+
+
+
+
+       // getData();
+
+
+
+
+
+//       new LoginForm();
+
+      //  new PassportsCRUD(new JFrame());
+
+      //  new PassportEditor(new JFrame());
+
+//new EmployeeRegClientForm(new JFrame());
+
+
+
+    }
+
+
+    private static void getData() throws SQLException {
+        ClientDao dao = new ClientDao();
+        EmployeeDao employeeDao = new EmployeeDao();
+        PositionDao positionDao = new PositionDao();
+        PassportDao dao1 = new PassportDao();
+
+        dao1.select();
+        dao.select();
+        employeeDao.select();
+        positionDao.select();
     }
 
 }
