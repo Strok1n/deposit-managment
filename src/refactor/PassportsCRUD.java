@@ -1,6 +1,6 @@
-package ui.admin;
+package refactor;
 
-import state.State;
+import ui.State;
 import util.WindowInitializer;
 
 import javax.swing.*;
@@ -30,14 +30,14 @@ public class PassportsCRUD extends JFrame {
 
 
         table1.getTableHeader().setReorderingAllowed(false);
-        table1.setModel(State.getPassportsModel());
+        table1.setModel(State.models.get(0));
         table1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println( table1.getSelectedRow());
                 if(e.getClickCount() == 2){
-                        new PassportEditor(thisPtr, table1.getSelectedRow(),         State.getPassportsModel());
+                        new PassportEditor(thisPtr, table1.getSelectedRow(),         State.models.get(0));
                 }
             }
         });

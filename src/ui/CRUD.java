@@ -1,10 +1,12 @@
-package util.menus;
+package ui;
 
-import state.State;
+import db.DatabaseConnection;
+import util.BCrypt;
 import util.Validator;
 import util.WindowInitializer;
 import javax.swing.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.util.Vector;
 
 public class CRUD extends JFrame{
@@ -99,6 +101,9 @@ public class CRUD extends JFrame{
     }
 
     public CRUD(JFrame backFrame, int modelNumber, boolean flag){
+
+        textField0.setEditable(false);
+
         packFieldsToVector();
         for(JLabel label : jTextLabels)
             label.setVisible(false);
@@ -110,91 +115,137 @@ public class CRUD extends JFrame{
             label.setVisible(false);
 
 //
-//        for(int i = 0; i != State.models.get(modelNumber).getColumnCount(); i++){
-//           // jTextLabels.get(i).setText(State.labels.get(modelNumber).get(i));
+//        for(int i = 0; i != ui.State.models.get(modelNumber).getColumnCount(); i++){
+//           // jTextLabels.get(i).setText(ui.State.labels.get(modelNumber).get(i));
 //         //   jTextLabels.get(i).setVisible(true);
 //          //  textFields.get(i).setVisible(true);
 //        }
 
-        for(int i = 0; i!= State.jTextFieldsNumber.get(modelNumber); i++){
+        for(int i = 0; i!= State.textLabels.get(modelNumber).size(); i++){
+
+           // System.out.println(State.jTextFieldsNumber.get(modelNumber));
+
+           // System.out.println(State.textLabels.get(modelNumber).size());
+
             jTextLabels.get(i).setText(State.textLabels.get(modelNumber).get(i));
             jTextLabels.get(i).setVisible(true);
             textFields.get(i).setVisible(true);
         }
-        for(int i = 0; i!= State.jComboBoxesNumber.get(modelNumber); i++){
+
+
+
+        for(int i = 0; i!= State.boxLabels.get(modelNumber).size(); i++){
             jBoxesLabels.get(i).setText(State.boxLabels.get(modelNumber).get(i));
             jBoxesLabels.get(i).setVisible(true);
             boxes.get(i).setVisible(true);
         }
 
 
-        if(modelNumber == 1){
+        //if(modelNumber == 1){
             for(int j = 0; j != State.jComboBoxesFK.get(modelNumber).size(); j++){
-                for(int i = 0; i != State.models.get(State.jComboBoxesFK.get(modelNumber).get(j)).getRowCount(); i++)
-                    boxes.get(j).addItem(String.valueOf(State.models.get(j).getDataVector().get(i)));
+
+
+              //  System.out.println(State.jComboBoxesFK.get(modelNumber).size());
+
+               // System.out.println( State.models.get(State.jComboBoxesFK.get(modelNumber).get(j)).getDataVector() );
+              //  System.out.println( State.models.get(State.jComboBoxesFK.get(modelNumber).get(j)).getRowCount() );
+
+
+                for(int i = 0; i != State.models.get(State.jComboBoxesFK.get(modelNumber).get(j)).getRowCount(); i++){
+
+                    boxes.get(j).addItem(String.valueOf(State.models
+                            .get(State.jComboBoxesFK.get(modelNumber)
+                                    .get(j)).getDataVector().get(i)));
+
+                 //   System.out.println(String.valueOf(State
+                       //     .models.get(State.jComboBoxesFK.get(modelNumber).get(j))
+                         //   .getDataVector().get(i)));
+
+                }
+
+
+
+
             }
-        }
+     //   }
 
 
 
 
         if(flag){
-
             button1.setVisible(false);
             button0.setText("Добавить запись");
-
             button0.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
                     Vector<String> params = new Vector<>();
-
-                    for(int i = 0; i != State.models.get(modelNumber).getColumnCount(); i++)
+                    params.add(textFields.get(0).getText());
+                    for(int i = 0; i != State.boxLabels.get(modelNumber).size(); i++) {
+                        StringBuilder builder = new StringBuilder(boxes.get(i).getSelectedItem().toString());
+                        String param = builder.substring(builder.indexOf("[") + 1, builder.indexOf(","));
+                        params.add(param);
+                    }
+                    for(int i = 1; i != State.textLabels.get(modelNumber).size(); i++)
                         params.add(textFields.get(i).getText());
-
+                    if(modelNumber == 1)
+                        params.set(5, BCrypt.hashpw(params.get(5), BCrypt.gensalt()));
+                    if(modelNumber == 4)
+                        params.set(8, BCrypt.hashpw(params.get(8), BCrypt.gensalt()));
                     System.out.println(Validator.validate(params, modelNumber));
-                    //validate -> sql + model
+
+                    if(Validator.validate(params, modelNumber)){
+                        thisPtr.setEnabled(false);
+                        JFrame bar = new AppProgressBar();
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    params.remove(0);
+                                    DatabaseConnection.insert(modelNumber, params);
+                                } catch (SQLException exception) {
+                                    exception.printStackTrace();
+                                }
+                                JOptionPane.showMessageDialog(thisPtr,
+                                        "Запись добавлена в базу данных.",
+                                        "Успех",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                thisPtr.setEnabled(true);
+                                bar.setVisible(false);
+                                for(JTextField field : textFields)
+                                    field.setText("");
+                            }
+                        });
+                        thread.start();
+                    }else{
+                        JOptionPane.showMessageDialog(thisPtr,
+                                "Некоторые поля заполнены неправильно.",
+                                "Ошибка",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+
+
+
                 }
             });
-
-
-
-
         }else{
-
             button0.setText("Обновить запись");
-
             button0.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-
                     // validate -> sql + model
-
                 }
             });
-
-
-
             button1.setText("Удалить запись");
-
             button1.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-
                     // confirm -> sql + model
-
                 }
             });
-
         }
-
-
-
-
-
-
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -202,7 +253,6 @@ public class CRUD extends JFrame{
                 backFrame.setEnabled(true);
             }
         });
-
 
 //        button0.addMouseListener(new MouseAdapter() {
 //            @Override

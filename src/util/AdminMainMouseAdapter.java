@@ -1,6 +1,6 @@
-package ui.employee;
+package util;
 
-import util.MainTable;
+import ui.MainTable;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

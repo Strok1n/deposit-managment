@@ -1,9 +1,8 @@
-package ui.admin;
+package refactor;
 
 import db.dao.PassportDao;
-import state.State;
+import ui.State;
 import ui.AppProgressBar;
-import util.FieldValidator;
 import util.WindowInitializer;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -43,21 +42,21 @@ public class PassportEditor extends JFrame{
             }
         });
 
-        id.setText((String) State.getPassportsModel().getValueAt(row, 0));
-        first_name.setText((String) State.getPassportsModel().getValueAt(row, 1));
-        last_name.setText((String) State.getPassportsModel().getValueAt(row, 2));
-        patronymic.setText((String) State.getPassportsModel().getValueAt(row, 3));
-        series.setText((String) State.getPassportsModel().getValueAt(row, 4));
-        number.setText((String) State.getPassportsModel().getValueAt(row, 5));
-        gender.setText((String) State.getPassportsModel().getValueAt(row, 6));
-        address.setText((String) State.getPassportsModel().getValueAt(row, 7));
-        birth_date.setText((String) State.getPassportsModel().getValueAt(row, 8));
-        birth_place.setText((String) State.getPassportsModel().getValueAt(row, 9));
-        issue_date.setText((String) State.getPassportsModel().getValueAt(row, 10));
-        issue_place.setText((String) State.getPassportsModel().getValueAt(row, 11));
-        military_duty.setText((String) State.getPassportsModel().getValueAt(row, 12));
-        marital_status.setText((String) State.getPassportsModel().getValueAt(row, 13));
-        is_valid.setText((String) State.getPassportsModel().getValueAt(row, 14));
+        id.setText((String) State.models.get(0).getValueAt(row, 0));
+        first_name.setText((String) State.models.get(0).getValueAt(row, 1));
+        last_name.setText((String) State.models.get(0).getValueAt(row, 2));
+        patronymic.setText((String) State.models.get(0).getValueAt(row, 3));
+        series.setText((String) State.models.get(0).getValueAt(row, 4));
+        number.setText((String) State.models.get(0).getValueAt(row, 5));
+        gender.setText((String) State.models.get(0).getValueAt(row, 6));
+        address.setText((String) State.models.get(0).getValueAt(row, 7));
+        birth_date.setText((String) State.models.get(0).getValueAt(row, 8));
+        birth_place.setText((String) State.models.get(0).getValueAt(row, 9));
+        issue_date.setText((String) State.models.get(0).getValueAt(row, 10));
+        issue_place.setText((String) State.models.get(0).getValueAt(row, 11));
+        military_duty.setText((String) State.models.get(0).getValueAt(row, 12));
+        marital_status.setText((String) State.models.get(0).getValueAt(row, 13));
+        is_valid.setText((String) State.models.get(0).getValueAt(row, 14));
 
 
 
@@ -106,7 +105,7 @@ public class PassportEditor extends JFrame{
                             State.getPassports().set(row, args);
 
                             for(int i = 0; i != args.size(); i++){
-                                State.getPassportsModel().setValueAt(args.get(i), row, i);
+                                State.models.get(0).setValueAt(args.get(i), row, i);
                             }
 
 
@@ -150,7 +149,7 @@ public class PassportEditor extends JFrame{
                             JFrame bar = new AppProgressBar();
                             PassportDao dao = new PassportDao();
                             try {
-                                dao.delete((String) State.getPassportsModel().getValueAt(row,0));
+                                dao.delete((String) State.models.get(0).getValueAt(row,0));
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }

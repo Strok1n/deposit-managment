@@ -1,7 +1,7 @@
 package db.dao;
 
 import db.DatabaseConnection;
-import state.State;
+import ui.State;
 
 import java.sql.*;
 import java.util.List;
@@ -124,7 +124,7 @@ public class PassportDao implements Dao{
             for (int i = 1; i != 16; i++) {
                 State.getPassports().get(j).add(String.valueOf(set.getObject(i)));
             }
-            State.getPassportsModel().addRow(new Vector<>(State.getPassports().get(j)));
+            State.models.get(0).addRow(new Vector<>(State.getPassports().get(j)));
             j++;
         }
 

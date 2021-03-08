@@ -1,4 +1,4 @@
-package ui.client;
+package ui;
 
 import util.WindowInitializer;
 
@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ClientMainForm extends JFrame{
+public class Client extends JFrame{
     private JButton снятьНаличныеСНакопившихсяButton;
     private JButton посмотретьИсториюСнятияПроцентовButton;
     private JButton снятьВсюСуммуВкладаButton;
@@ -14,7 +14,7 @@ public class ClientMainForm extends JFrame{
     private JPanel mainPanel;
 
 
-    public ClientMainForm(){
+    public Client(){
 
         снятьНаличныеСНакопившихсяButton
                 .addMouseListener(new MouseAdapter() {

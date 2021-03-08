@@ -1,7 +1,7 @@
-package util;
+package ui;
 
-import state.State;
-import util.menus.CRUD;
+import db.DatabaseConnection;
+import util.WindowInitializer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 public class MainTable extends JFrame {
 
@@ -17,6 +18,7 @@ public class MainTable extends JFrame {
     private JPanel panel;
     private JButton add;
     private JButton refresh;
+    private JButton сортироватьButton;
 
 
     public MainTable(JFrame backFrame, int modelNumber){
@@ -33,7 +35,6 @@ public class MainTable extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                System.out.println( table1.getSelectedRow());
                 if(e.getClickCount() == 2){
                     new CRUD(backFrame, modelNumber, false);
                 }
@@ -45,6 +46,27 @@ public class MainTable extends JFrame {
                 super.mouseClicked(e);
                 thisPtr.setEnabled(false);
                 new CRUD(thisPtr, modelNumber, true);
+            }
+        });
+        refresh.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                thisPtr.setEnabled(false);
+                JFrame bar = new AppProgressBar();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            DatabaseConnection.refreshModel(modelNumber);
+                        } catch (SQLException exception) {
+                            exception.printStackTrace();
+                        }
+                        bar.setVisible(false);
+                        thisPtr.setEnabled(true);
+                    }
+                });
+                thread.start();
             }
         });
         this.setPreferredSize(new Dimension(1024,784));

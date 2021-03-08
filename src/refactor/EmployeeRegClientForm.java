@@ -1,12 +1,11 @@
-package ui.employee;
+package refactor;
 
 import db.dao.ClientDao;
 import db.dao.PassportDao;
-import state.State;
+import ui.State;
 import ui.AppProgressBar;
 import ui.Passports;
 import util.BCrypt;
-import util.FieldValidator;
 import util.WindowInitializer;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;

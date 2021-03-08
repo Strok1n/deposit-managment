@@ -3,16 +3,13 @@ import db.dao.ClientDao;
 import db.dao.EmployeeDao;
 import db.dao.PassportDao;
 import db.dao.PositionDao;
-import state.State;
-import ui.admin.AdminMainForm;
+import ui.Admin;
+import ui.State;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.util.Date;
+import java.util.Arrays;
+import java.util.Vector;
 
 
 public class Main {
@@ -25,12 +22,20 @@ public class Main {
 
         State.init();
 
+      //  DatabaseConnection
+             //   .insert(
+                     //   0,
+                      //  new Vector<>
+                           //     (Arrays.asList("asdf","asdf","asdf","3","2","м","2000-01-01","2000-01-01","2000-01-01","2000-01-01","2000-01-01","2000-01-01","2000-01-01","да")));
+
+
         //System.out.println(AppState.models.get(1).getDataVector());
 
-        String str = "df";
+        new Admin();
 
 
-        new AdminMainForm();
+
+
 
        // new CrudForm(new JFrame(), 0);
        // new CrudForm(new JFrame(), 1);

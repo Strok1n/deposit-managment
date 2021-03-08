@@ -1,20 +1,21 @@
-package ui.employee;
+package ui;
 
+import refactor.EmployeeRegClientForm;
+import refactor.EmployeeRegContractForm;
 import util.WindowInitializer;
-import util.menus.CRUD;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
-public class EmployeeMainForm extends JFrame {
+public class Employee extends JFrame {
     private JPanel panelMain;
     private JButton registerPassportBtn;
     private JButton registerContractBtn;
     private JButton registerClientBtn;
 
-    public EmployeeMainForm(){
+    public Employee(){
         JFrame frame = this;
         this.registerPassportBtn.addMouseListener(new MouseAdapter() {
             @Override

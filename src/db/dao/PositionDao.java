@@ -1,7 +1,7 @@
 package db.dao;
 
 import db.DatabaseConnection;
-import state.State;
+import ui.State;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,9 +1,5 @@
 package ui;
 
-import state.State;
-import ui.admin.AdminMainForm;
-import ui.client.ClientMainForm;
-import ui.employee.EmployeeMainForm;
 import util.BCrypt;
 import util.WindowInitializer;
 import javax.swing.*;
@@ -57,16 +53,16 @@ public class LoginForm extends JFrame {
                                 }
                         if(admin){
 
-                            new AdminMainForm();
+                            new Admin();
                             dispose();
                         }else if(employee){
 
-                            new EmployeeMainForm();
+                            new Employee();
                             dispose();
                         }
                         if(client)
                         {
-                            new ClientMainForm();
+                            new Client();
                             dispose();
                         }
                         bar.setVisible(false);

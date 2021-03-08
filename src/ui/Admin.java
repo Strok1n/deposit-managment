@@ -1,12 +1,12 @@
-package ui.admin;
+package ui;
 
-import ui.employee.AdminMainMouseAdapter;
+import util.AdminMainMouseAdapter;
 import util.WindowInitializer;
 
 import javax.swing.*;
 
 
-public class AdminMainForm extends JFrame {
+public class Admin extends JFrame {
 
     private JPanel panelMain;
     private JButton редактироватьТаблицуПаспортовButton;
@@ -18,7 +18,7 @@ public class AdminMainForm extends JFrame {
     private JButton редактироватьТаблицуКонтрактовButton;
     private JButton редактироватьТаблицуИсторийButton;
 
-    public AdminMainForm(){
+    public Admin(){
 
 
 
