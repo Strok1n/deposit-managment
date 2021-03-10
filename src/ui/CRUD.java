@@ -5,8 +5,12 @@ import util.BCrypt;
 import util.Validator;
 import util.WindowInitializer;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 public class CRUD extends JFrame{
@@ -100,7 +104,8 @@ public class CRUD extends JFrame{
         jBoxesLabels.add(labelBox2);
     }
 
-    public CRUD(JFrame backFrame, int modelNumber, boolean flag){
+    public CRUD(JFrame backFrame, int modelNumber, int row){
+        backFrame.setEnabled(false);
 
         textField0.setEditable(false);
 
@@ -172,13 +177,16 @@ public class CRUD extends JFrame{
 
 
 
-        if(flag){
+        if(row == -1){
             button1.setVisible(false);
             button0.setText("Добавить запись");
             button0.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
+
+
+
                     Vector<String> params = new Vector<>();
                     params.add(textFields.get(0).getText());
                     for(int i = 0; i != State.boxLabels.get(modelNumber).size(); i++) {
@@ -193,6 +201,9 @@ public class CRUD extends JFrame{
                     if(modelNumber == 4)
                         params.set(8, BCrypt.hashpw(params.get(8), BCrypt.gensalt()));
                     System.out.println(Validator.validate(params, modelNumber));
+
+
+
 
                     if(Validator.validate(params, modelNumber)){
                         thisPtr.setEnabled(false);
@@ -229,11 +240,112 @@ public class CRUD extends JFrame{
                 }
             });
         }else{
+
+
+            textField0.setText(State.models.get(modelNumber).getValueAt(row,0).toString());
+            for(int i = 1; i != State.textLabels.get(modelNumber).size(); i++)
+                textFields.get(i).setText(State.models.get(modelNumber).getValueAt(row,i + State.boxLabels.get(modelNumber).size()).toString());
+
+
+
+
+            Vector<String> id = new Vector<>();
+
+
+
+            for(int i = 0; i != State.boxLabels.get(modelNumber).size(); i++)
+            {
+                id.add(State.models.get(modelNumber).getValueAt(row, i + 1).toString());
+                System.out.println(id);
+               // boxes.get(i).setSelectedIndex(0);
+
+                System.out.println(State.models.get(State.jComboBoxesFK.get(modelNumber).get(i)).getRowCount());
+
+                for(int j = 0; j != State.models.get(State.jComboBoxesFK.get(modelNumber).get(i)).getRowCount(); j++){
+
+                    System.out.println(State.models.get(State.jComboBoxesFK.get(modelNumber).get(i)).getValueAt(j,0));
+
+                    if(State.models.get(State.jComboBoxesFK.get(modelNumber).get(i)).getValueAt(j, 0).toString().trim().equals(id.get(i))){
+                        System.out.println("SDFSDFSDFSDF");
+
+                        System.out.println(State.models.get(State.jComboBoxesFK.get(modelNumber).get(i)).getDataVector().get(j));
+
+
+
+
+                        boxes.get(i).setSelectedIndex(j);
+                    }
+
+
+                }
+
+
+            }
+
+            for(int i = 0; i != State.jComboBoxesFK.get(modelNumber).size(); i++)
+                System.out.println(State.jComboBoxesFK.get(modelNumber).get(i));
+
+
+
+
+
+
+
             button0.setText("Обновить запись");
             button0.addMouseListener(new MouseAdapter() {
+
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
+
+
+
+                    Vector<String> params = new Vector<>();
+                    params.add(textFields.get(0).getText());
+                    for(int i = 0; i != State.boxLabels.get(modelNumber).size(); i++) {
+                        StringBuilder builder = new StringBuilder(boxes.get(i).getSelectedItem().toString());
+                        String param = builder.substring(builder.indexOf("[") + 1, builder.indexOf(","));
+                        params.add(param);
+                    }
+                    for(int i = 1; i != State.textLabels.get(modelNumber).size(); i++)
+                        params.add(textFields.get(i).getText());
+                    if(modelNumber == 1)
+                        params.set(5, BCrypt.hashpw(params.get(5), BCrypt.gensalt()));
+                    if(modelNumber == 4)
+                        params.set(8, BCrypt.hashpw(params.get(8), BCrypt.gensalt()));
+                    System.out.println(Validator.validate(params, modelNumber));
+
+
+                    if(Validator.validate(params, modelNumber)){
+                        thisPtr.setEnabled(false);
+                        JFrame bar = new AppProgressBar();
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                  // params.remove(0);
+                                    DatabaseConnection.update(modelNumber, params);
+                                } catch (SQLException exception) {
+                                    exception.printStackTrace();
+                                }
+                                JOptionPane.showMessageDialog(thisPtr,
+                                        "Запись добавлена в базу данных.",
+                                        "Успех",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                thisPtr.setEnabled(true);
+                                bar.setVisible(false);
+                                for(JTextField field : textFields)
+                                    field.setText("");
+                            }
+                        });
+                        thread.start();
+                    }else{
+                        JOptionPane.showMessageDialog(thisPtr,
+                                "Некоторые поля заполнены неправильно.",
+                                "Ошибка",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+
                     // validate -> sql + model
                 }
             });
@@ -242,7 +354,42 @@ public class CRUD extends JFrame{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
+                    int choice = JOptionPane.showConfirmDialog(thisPtr,
+                            "Вы действительно хотите удалить?",
+                            "Подтверждение",
+                            JOptionPane.YES_NO_OPTION);
                     // confirm -> sql + model
+
+                    if (choice == 0){
+                        thisPtr.setEnabled(false);
+                        JFrame bar = new AppProgressBar();
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    DatabaseConnection.delete(modelNumber, Integer.parseInt(State.models.get(modelNumber).getValueAt(row, 0).toString()));
+                                    State.models.get(modelNumber).removeRow(row);
+                                    JOptionPane.showMessageDialog(thisPtr,
+                                            "Запись удалена из базы данных.",
+                                            "Успех",
+                                            JOptionPane.INFORMATION_MESSAGE);
+                                    thisPtr.setEnabled(true);
+                                    bar.setVisible(false);
+                                } catch (SQLException exception) {
+                                    exception.printStackTrace();
+                                }
+                            }
+                        });
+
+
+
+                        thread.start();
+
+
+
+                    }
+
+
                 }
             });
         }

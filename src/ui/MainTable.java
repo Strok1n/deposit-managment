@@ -36,7 +36,9 @@ public class MainTable extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 if(e.getClickCount() == 2){
-                    new CRUD(backFrame, modelNumber, false);
+                    System.out.println(table1.getSelectedRow());
+                   // thisPtr.setEnabled(false);
+                    new CRUD(thisPtr, modelNumber, table1.getSelectedRow());
                 }
             }
         });
@@ -44,15 +46,15 @@ public class MainTable extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                thisPtr.setEnabled(false);
-                new CRUD(thisPtr, modelNumber, true);
+               // thisPtr.setEnabled(false);
+                new CRUD(thisPtr, modelNumber, -1);
             }
         });
         refresh.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                thisPtr.setEnabled(false);
+                //thisPtr.setEnabled(false);
                 JFrame bar = new AppProgressBar();
                 Thread thread = new Thread(new Runnable() {
                     @Override

@@ -4,6 +4,7 @@ import db.dao.EmployeeDao;
 import db.dao.PassportDao;
 import db.dao.PositionDao;
 import ui.Admin;
+import ui.LoginForm;
 import ui.State;
 
 import javax.swing.*;
@@ -22,15 +23,9 @@ public class Main {
 
         State.init();
 
-      //  DatabaseConnection
-             //   .insert(
-                     //   0,
-                      //  new Vector<>
-                           //     (Arrays.asList("asdf","asdf","asdf","3","2","м","2000-01-01","2000-01-01","2000-01-01","2000-01-01","2000-01-01","2000-01-01","2000-01-01","да")));
 
 
-        //System.out.println(AppState.models.get(1).getDataVector());
-
+        new LoginForm();
         new Admin();
 
 
@@ -53,11 +48,7 @@ public class Main {
 
 //       new LoginForm();
 
-      //  new PassportsCRUD(new JFrame());
 
-      //  new PassportEditor(new JFrame());
-
-//new EmployeeRegClientForm(new JFrame());
 
 
 

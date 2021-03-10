@@ -30,36 +30,39 @@ public class LoginForm extends JFrame {
                         boolean client = false, employee = false, admin = false;
                         loginField.getText();
 
-                        for(int i = 0; i != State.getClients().size(); i++)
-                            if(loginField.getText().equals(State.getClients().get(i).get(4)))
+                        for(int i = 0; i != State.models.get(1).getRowCount(); i++)
+                            if(loginField.getText().equals(State.models.get(1).getValueAt(i,3)))
                                 if(BCrypt.checkpw(new String(passwordField.getPassword()),
-                                        State.getClients().get(i).get(5))){
-                                    State.setClientData(new Vector<>(State.getClients().get(i)));
+                                        State.models.get(1).getValueAt(i,5).toString())){
+                                    System.out.println("FSDSFD");
                                     client = true;
                                 }
-                        for(int i = 0; i != State.getEmployees().size(); i++)
-                            if(loginField.getText().equals(State.getEmployees().get(i).get(7)))
+                        for(int i = 0; i != State.models.get(4).getRowCount(); i++)
+                            if(loginField.getText().equals(State.models.get(4).getValueAt(i,6)))
                                 if(BCrypt.checkpw(new String(passwordField.getPassword()),
-                                        State.getEmployees().get(i).get(8))){
-                                    State.setEmployeeData(new Vector<>(State.getEmployees().get(i)));
-                                    employee = true;
-                                }
-                        if(employee)
-                            for(int i = 0; i != State.getPositions().size(); i++)
-                                if (State.getEmployeeData().get(1).equals(State.getPositions().get(i).get(0)) && (
-                                        State.getPositions().get(i).get(2).contains("Администратор") ||
-                                                State.getPositions().get(i).get(2).equals("Администратор"))){
-                                    admin =true;
-                                }
-                        if(admin){
+                                        State.models.get(4).getValueAt(i,8).toString())){
 
+                                    for(int j = 0; j != State.models.get(3).getRowCount(); j++){
+
+
+                                        if(State.models.get(4).getValueAt(i, 2).toString().equals(State.models.get(3).getValueAt(j, 0).toString()) &&(
+                                        State.models.get(3).getValueAt(j,2).toString().contains("Администратор") ||
+                                                State.models.get(3).getValueAt(j,2).toString().equals("Администратор")  )){
+                                            admin = true;
+
+                                        }
+
+                                    }
+                                    employee = true;
+                               }
+                              //  }
+                        if(admin){
                             new Admin();
                             dispose();
                         }else if(employee){
-
                             new Employee();
                             dispose();
-                        }
+                        }else
                         if(client)
                         {
                             new Client();

@@ -1,13 +1,10 @@
 package ui;
 
-import refactor.EmployeeRegClientForm;
-import refactor.EmployeeRegContractForm;
 import util.WindowInitializer;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 
 public class Employee extends JFrame {
     private JPanel panelMain;
@@ -22,7 +19,7 @@ public class Employee extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 frame.setEnabled(false);
-                new CRUD(frame, 0, true);
+                new CRUD(frame, 0, -1);
             }
         });
         this.registerContractBtn.addMouseListener(new MouseAdapter() {
@@ -30,7 +27,7 @@ public class Employee extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 frame.setEnabled(false);
-                new EmployeeRegContractForm(frame);
+                new CRUD(frame, 6,-1);
             }
         });
         this.registerClientBtn.addMouseListener(new MouseAdapter() {
@@ -38,17 +35,13 @@ public class Employee extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 frame.setEnabled(false);
-                try {
-                    new EmployeeRegClientForm(frame);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+
+                new CRUD(frame,  1,-1);
             }
         });
         WindowInitializer.initialize(this, panelMain,
                 WindowConstants.EXIT_ON_CLOSE,
                 "Управление вкладами");
-
     }
 
 

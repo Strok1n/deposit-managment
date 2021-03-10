@@ -63,7 +63,7 @@ public class Validator {
         return str.length() > length;
     }
 
-    private static boolean notOnlyNumbers(String str){
+    public static boolean notOnlyNumbers(String str){
         Pattern pattern = Pattern.compile("[^0123456789]", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(str);
         return matcher.find();
